@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request,jsonify
+from flask import Flask, render_template,request,jsonify, send_file
 import os
 from werkzeug.utils import secure_filename
 import word_cloud as wc
@@ -11,7 +11,7 @@ app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
 app.config["MAX_IMAGE_FILESIZE"] = 5 * 1024 * 1024
 
 def allowed_image(filename):
-
+    """Function to check if file submitted is an image file"""
     if not "." in filename:
         return False
 
@@ -23,7 +23,7 @@ def allowed_image(filename):
         return False
 
 def allowed_image_filesize(filesize):
-
+    """Function to check if image file uploaded is within filesize."""
     if int(filesize) <= app.config["MAX_IMAGE_FILESIZE"]:
         return True
     else:
@@ -33,7 +33,7 @@ def allowed_image_filesize(filesize):
 def home():
 
     silhouette_image = 'static/data/images/reddit_snoo.jpg'
-    word_cloud = '/static/data/images/reddit_snoo_cloud.png'
+    word_cloud = 'static/data/images/reddit_snoo_cloud.png'
 
     return render_template('index.html', silhouette_file=silhouette_image, cloud_file=word_cloud)
 
@@ -47,7 +47,7 @@ def contact():
 
 @app.route("/upload", methods=["GET", "POST"])
 def upload_image():
-
+    """Function which handles the silloutte image upload by a user"""
     silhouette_image = 'static/data/images/reddit_snoo.jpg'
     word_cloud = 'static/data/images/reddit_snoo_cloud.png'
 
@@ -59,15 +59,18 @@ def upload_image():
             if "filesize" in request.cookies:
 
                 if not allowed_image_filesize(request.cookies["filesize"]):
+                    #If file to large let user know
                     return jsonify(name='File size too large')
 
                 image = request.files["image"]
 
                 if image.filename == "":
+                    #If file not supplied let user know
                     return jsonify(name='No file selected')
 
                 if allowed_image(image.filename):
 
+                    #Save silloutte image template uploaded by user and update the silloutte image shown
                     filename = secure_filename(image.filename)
                     image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
                     silhouette_image_path = "static/temp_data/uploads/" + filename
@@ -75,12 +78,14 @@ def upload_image():
                     return jsonify(name=filename,path=silhouette_image_path)
 
                 else:
+                    #User did not upload a supported image type.
                     return jsonify(name='That file type is not supported.')
 
     return render_template('index.html', silhouette_file=silhouette_image, cloud_file=word_cloud)
 
 @app.route("/process", methods=["GET", "POST"])
 def generate_word_cloud():
+    """Function to generate a word cloud and display it to the user"""
 
     silloutte_path = 'static/data/images/reddit_snoo.jpg'
     word_cloud_path = 'static/data/images/reddit_snoo_cloud.png'
@@ -88,12 +93,43 @@ def generate_word_cloud():
     # Check if we have received a post request
     if request.method == "POST":
 
-        silloutte_path = request.data.decode('utf-8')
-        word_cloud_path = wc.generateWordCloud(silloutte_path,'https://www.reddit.com/r/dataisbeautiful/comments/gs4me1/oc_word_cloud_comparison_between_user_comments_on/')
+        data = request.get_json(force=True) #Get the data from the ajax
 
-        return jsonify(cloud_file_path=word_cloud_path)
+        silloutte_path = data.get('path') #Get the current silloutte image
+        reddit_url = data.get('reddit_url') #Get the user entered reddit url
+        text_input = data.get('text_input') #Get the text data
+
+        if reddit_url != '': #Check reddit url is not empty
+
+            data = wc.generateRedditWordCloud(silloutte_path, reddit_url)
+
+            if(data.get('message')=='success'):
+
+                return jsonify(message='success',cloud_file_path=data.get('path'))
+
+            else:
+
+                return jsonify(message='No data',cloud_file_path=data.get('path'))
+
+        elif text_input !='':
+            word_cloud_path = wc.generateWordCloud(silloutte_path,text_input)
+            return jsonify(message='success',cloud_file_path=word_cloud_path)
+
+        else:
+            return jsonify(message='error',cloud_file_path=word_cloud_path)
 
     return render_template('index.html', silhouette_file=silloutte_path, cloud_file=word_cloud_path)
+
+@app.route("/downloadImage",methods=["GET","POST"])
+def downloadCloud():
+    """Function to download word cloud image"""
+    
+    if request.method=='POST':
+        word_cloud = request.form['download-image']
+        return send_file(word_cloud,
+                        mimetype='image/png',
+                        attachment_filename='word_cloud_image.png',
+                        as_attachment=True)
 
 if __name__ == "__main__":
     app.run(debug=True)
