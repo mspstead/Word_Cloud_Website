@@ -34,8 +34,9 @@ def home():
 
     silhouette_image = 'static/data/images/reddit_snoo.jpg'
     word_cloud = 'static/data/images/reddit_snoo_cloud.png'
+    csv_file_path = 'static/data/csvdata/example.csv'
 
-    return render_template('index.html', silhouette_file=silhouette_image, cloud_file=word_cloud)
+    return render_template('index.html', silhouette_file=silhouette_image, cloud_file=word_cloud, csv_file=csv_file_path)
 
 @app.route("/info")
 def example():
@@ -50,6 +51,7 @@ def upload_image():
     """Function which handles the silloutte image upload by a user"""
     silhouette_image = 'static/data/images/reddit_snoo.jpg'
     word_cloud = 'static/data/images/reddit_snoo_cloud.png'
+    csv_file_path = 'static/data/csvdata/example.csv'
 
     # Check if we have received a post request
     if request.method == "POST":
@@ -81,7 +83,7 @@ def upload_image():
                     #User did not upload a supported image type.
                     return jsonify(name='That file type is not supported.')
 
-    return render_template('index.html', silhouette_file=silhouette_image, cloud_file=word_cloud)
+    return render_template('index.html', silhouette_file=silhouette_image, cloud_file=word_cloud, csv_file=csv_file_path)
 
 @app.route("/process", methods=["GET", "POST"])
 def generate_word_cloud():
@@ -89,6 +91,7 @@ def generate_word_cloud():
 
     silloutte_path = 'static/data/images/reddit_snoo.jpg'
     word_cloud_path = 'static/data/images/reddit_snoo_cloud.png'
+    csv_file_path = 'static/data/csvdata/example.csv'
 
     # Check if we have received a post request
     if request.method == "POST":
@@ -105,30 +108,41 @@ def generate_word_cloud():
 
             if(data.get('message')=='success'):
 
-                return jsonify(message='success',cloud_file_path=data.get('path'))
+                return jsonify(message='success',cloud_file_path=data.get('img_path'),csv_file_path=data.get('csv_path'))
 
             else:
 
-                return jsonify(message='No data',cloud_file_path=data.get('path'))
+                return jsonify(message='No data',cloud_file_path=data.get('img_path'),csv_file_path=data.get('csv_path'))
 
         elif text_input !='':
-            word_cloud_path = wc.generateWordCloud(silloutte_path,text_input)
-            return jsonify(message='success',cloud_file_path=word_cloud_path)
+            data = wc.generateWordCloud(silloutte_path,text_input)
+            return jsonify(message='success',cloud_file_path=data.get('img_path'),csv_file_path=data.get('csv_path'))
 
         else:
-            return jsonify(message='error',cloud_file_path=word_cloud_path)
+            return jsonify(message='error',cloud_file_path=word_cloud_path,csv_file_path=data.get('csv_path'))
 
-    return render_template('index.html', silhouette_file=silloutte_path, cloud_file=word_cloud_path)
+    return render_template('index.html', silhouette_file=silloutte_path, cloud_file=word_cloud_path, csv_file=csv_file_path)
 
-@app.route("/downloadImage",methods=["GET","POST"])
+@app.route("/downloadImage",methods=["POST"])
 def downloadCloud():
     """Function to download word cloud image"""
-    
+
     if request.method=='POST':
         word_cloud = request.form['download-image']
         return send_file(word_cloud,
                         mimetype='image/png',
                         attachment_filename='word_cloud_image.png',
+                        as_attachment=True)
+
+@app.route("/downloadFile",methods=["POST"])
+def downloadFile():
+    """Function to download word cloud stats csv file"""
+
+    if request.method=='POST':
+        word_cloud_csv = request.form['download-file']
+        return send_file(word_cloud_csv,
+                        mimetype='text/csv',
+                        attachment_filename='word_cloud_stats.csv',
                         as_attachment=True)
 
 if __name__ == "__main__":
