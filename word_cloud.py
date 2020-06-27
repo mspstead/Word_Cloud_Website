@@ -50,10 +50,10 @@ def generateRedditWordCloud(silloutte_image_path,reddit_url=''):
 
         words_comments = comment_df['comment'].str.split()
         flat_list = [item for sublist in list(words_comments) for item in sublist]
-        words = pd.DataFrame({'word': flat_list})
-        word_count_df = words['word'].value_counts().to_frame().reset_index()
+        words = pd.DataFrame({'word_count': flat_list})
+        word_count_df = words['word_count'].value_counts().to_frame().reset_index()
         print(words.size)
-        print(word_count_df.nlargest(100, 'word'))
+        print(word_count_df.nlargest(100, 'word_count'))
 
         d = {}
         for a, x in word_count_df.values:
@@ -71,10 +71,14 @@ def generateRedditWordCloud(silloutte_image_path,reddit_url=''):
         plt.imshow(wordcloud, interpolation='bilinear')
         plt.axis("off")
         plt.tight_layout(pad=0)
+
         filename = add_prefix('export.png')
+        csv_filename = add_prefix('export_stats.csv')
+
+        word_count_df.to_csv(os.path.join('static/temp_data/exports/', csv_filename),index=False)
         plt.savefig(os.path.join('static/temp_data/exports/', filename))
 
-        return {'path':'static/temp_data/exports/'+filename,'message':'success'}
+        return {'csv_path':'static/temp_data/exports/'+csv_filename,'img_path':'static/temp_data/exports/'+filename,'message':'success'}
 
     except Exception:
 
@@ -89,10 +93,8 @@ def generateWordCloud(silloutte_image_path,text_input=''):
 
     words_comments = comment_df['comment'].str.split()
     flat_list = [item for sublist in list(words_comments) for item in sublist]
-    words = pd.DataFrame({'word': flat_list})
-    word_count_df = words['word'].value_counts().to_frame().reset_index()
-    print(words.size)
-    print(word_count_df.nlargest(100, 'word'))
+    words = pd.DataFrame({'word_count': flat_list})
+    word_count_df = words['word_count'].value_counts().to_frame().reset_index()
 
     d = {}
     for a, x in word_count_df.values:
@@ -110,8 +112,11 @@ def generateWordCloud(silloutte_image_path,text_input=''):
     plt.imshow(wordcloud, interpolation='bilinear')
     plt.axis("off")
     plt.tight_layout(pad=0)
-    filename = add_prefix('export.png')
+
+    filename = add_prefix('export_image.png')
+    csv_filename = add_prefix('export_stats.csv')
+
+    word_count_df.to_csv(os.path.join('static/temp_data/exports/', csv_filename),index=False)
     plt.savefig(os.path.join('static/temp_data/exports/', filename))
 
-
-    return 'static/temp_data/exports/'+filename
+    return {'img_path':'static/temp_data/exports/'+filename, 'csv_path':'static/temp_data/exports/'+csv_filename}

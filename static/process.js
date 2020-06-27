@@ -26,6 +26,7 @@ $('#generateCloud').click(function() {
             my_url = "{{ url_for('upload', filename="+data['cloud_file_path']+" }}";
             $("#cloud_image").attr('src', data['cloud_file_path']); // setting the src attribute of img tag
             $("#img-download-btn").attr('value', data['cloud_file_path'])
+            $("#file-download-btn").attr('value', data['csv_file_path'])
           }
           else if(status=='No data'){ //If reddit url incorrect or returned no data
             alert('Bad Reddit URL or issue connecting to Reddit.')
