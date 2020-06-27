@@ -3,18 +3,32 @@ $('#generateCloud').click(function() {
     event.preventDefault();
 
     var silloutte_path = $('#uploadImage').attr('src');
-    var reddit_url = $('#reddit-url').val(); //get reddit url using id
-    var text_input = $('#text_input').val(); //Get text data using id
+    var input = $('#text_input').val(); //Get text data using id
 
-    if(reddit_url==''&&text_input==''){ //check if input fields are empty
+    var reddit_url = ''
+    var user_name = ''
+    var text_input = ''
 
-        alert('Please input a reddit comments url or some text!')
+    if(input==''){ //check if input fields are empty
+        alert('Please input a reddit comments url, username, or some text!')
+    };
 
+    var selectedOption = $("input[name='inlineRadioOptions']:checked").val();
+    console.log(selectedOption)
+
+    if(selectedOption=='option1'){
+        reddit_url = input
+    }
+    else if(selectedOption=='option2'){
+        user_name = input
+    }
+    else if(selectedOption=='option3'){
+        text_input = input
     };
     $.ajax({
         type: 'POST',
         url: '/process',
-        data: JSON.stringify({ "path":silloutte_path, "reddit_url":reddit_url, "text_input":text_input } ),
+        data: JSON.stringify({ "path":silloutte_path, "reddit_url":reddit_url, "user_name":user_name,"text_input":text_input } ),
         contentType: false,
         processData: false,
         dataType: 'json'

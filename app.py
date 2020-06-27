@@ -38,13 +38,9 @@ def home():
 
     return render_template('index.html', silhouette_file=silhouette_image, cloud_file=word_cloud, csv_file=csv_file_path)
 
-@app.route("/info")
+@app.route("/examples")
 def example():
     return render_template('info.html')
-
-@app.route("/contact")
-def contact():
-    return render_template('contact.html')
 
 @app.route("/upload", methods=["GET", "POST"])
 def upload_image():
@@ -100,6 +96,7 @@ def generate_word_cloud():
 
         silloutte_path = data.get('path') #Get the current silloutte image
         reddit_url = data.get('reddit_url') #Get the user entered reddit url
+        username = data.get('user_name')
         text_input = data.get('text_input') #Get the text data
 
         if reddit_url != '': #Check reddit url is not empty
@@ -113,6 +110,19 @@ def generate_word_cloud():
             else:
 
                 return jsonify(message='No data',cloud_file_path=data.get('img_path'),csv_file_path=data.get('csv_path'))
+
+        elif username != '':
+
+            data = wc.generateRedditUserWordCloud(silloutte_path, username)
+
+            if(data.get('message')=='success'):
+
+                return jsonify(message='success',cloud_file_path=data.get('img_path'),csv_file_path=data.get('csv_path'))
+
+            else:
+
+                return jsonify(message='No data',cloud_file_path=data.get('img_path'),csv_file_path=data.get('csv_path'))
+
 
         elif text_input !='':
             data = wc.generateWordCloud(silloutte_path,text_input)

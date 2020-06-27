@@ -5,34 +5,41 @@
 		<div class="col-md-12">
             <h1></h1>
 			<h3>The Reddit thread word cloud generator</h3>
-            <p>Create a word cloud of a reddit comments section mapped to a template of your choice.<br>
-                Or instead enter in a text passage that you would like generate a word cloud for.
+            <p>Create a word cloud of a reddit comments section or a reddit user's comments mapped to a template of your choice.<br>
+                You can also enter in a passage of text that you would like generate a word cloud for.<br>
+                Select from one of our pre-made sillouttes or <a href="https://www.instructables.com/id/Remove-image-background-and-turn-it-into-silhouett/">create your own</a> and upload it.
             </p>
 		</div>
 </div>
 <div class="card">
         <div class="card-block">
+            <div style="height:5px"></div>
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
-                    <input id="reddit-url" class="form-control" type="text" placeholder="Enter reddit comments url here">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked>
+                      <label class="form-check-label" for="inlineRadio1">Reddit Comments Url</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                      <label class="form-check-label" for="inlineRadio2">Reddit Username</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                      <label class="form-check-label" for="inlineRadio3">Raw Text</label>
+                    </div>
                 </div>
                 <div class="col-md-1"></div>
             </div>
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
-                    <p>Or</p>
+                    <input id="text_input" class="form-control" type="text" placeholder="Enter reddit url, username, or text here...">
                 </div>
                 <div class="col-md-1"></div>
             </div>
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
-                    <input id="text_input" class="form-control" type="text" placeholder="Enter large text passage to parse here">
-                </div>
-                <div class="col-md-1"></div>
-            </div>
+            <div style="height:5px"></div>
             <div class="row">
                 <div class="col-md-1">
                 </div>
@@ -40,7 +47,7 @@
                     <img class="img-fluid" id="uploadImage" src="{{ silhouette_file }}" style="width:100%; height:89%">
                     <div style="height:0.5%"></div>
                     <form>
-                    <button type="button" class="btn-primary" style="width:100%; height:10%" data-toggle="modal" data-target="#upload-modal">upload new silhouette</button>
+                    <button type="button" class="btn-primary" style="width:100%; height:10%" data-toggle="modal" data-target="#upload-modal">Upload New Silhouette</button>
                     </form>
                       <!-- Modal -->
                       <div class="modal fade" id="upload-modal" role="dialog">
@@ -82,15 +89,17 @@
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
                     <form action="/downloadImage" method="POST">
-                        <button id="img-download-btn" name="download-image" type="submit" class="btn-success" style="width:100%; height:49%" value="{{ cloud_file }}">Download Word Cloud</button>
+                        <button id="img-download-btn" name="download-image" type="submit" class="btn-success" style="width:100%; height:48%" value="{{ cloud_file }}">Download Word Cloud</button>
                     </form>
-                    <div style="width:100%; height:2%"></div>
+                    <div style="width:100%; height:2%">    </div>
                     <form action="/downloadFile" method="POST">
-                        <button id="file-download-btn" name="download-file" type="submit" class="btn-success" style="width:100%; height:49%" value="{{ csv_file }}">Download Word Statistics</button>
+                        <button id="file-download-btn" name="download-file" type="submit" class="btn-success" style="width:100%; height:48%" value="{{ csv_file }}">Download Word Statistics</button>
                     </form>
+                    <div style="width:100%; height:2%">    </div>
                 </div>
                 <div class="col-md-1"></div>
             </div>
+            <div style="height:5px"></div>
         </div>
 </div>
 <script src="{{url_for('static', filename='upload.js')}}"></script>
