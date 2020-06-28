@@ -4,7 +4,7 @@
 <div class="row">
 		<div class="col-md-12">
             <h1></h1>
-			<h3>The Reddit thread word cloud generator</h3>
+			<h3>The Reddit word cloud generator</h3>
             <p>Create a word cloud of a reddit comments section or a particular user's comments mapped to a template of your choice.<br>
                 You can also enter in a passage of text that you would like generate a word cloud for.<br>
                 Select from one of our pre-made sillouttes or <a href="https://www.instructables.com/id/Remove-image-background-and-turn-it-into-silhouett/">create your own</a> and upload it.
@@ -43,10 +43,31 @@
                 <div class="col-md-1">
                 </div>
                 <div class="col-md-5">
-                    <img class="img-fluid" id="uploadImage" src="{{ silhouette_file }}" style="width:100%; height:89%">
-                    <div style="height:0.5%"></div>
+                    <form action="/imageMasks" method="GET">
+                        <button id="mask-button" class="btn-primary" style="width:100%;height:30px;" data-toggle="modal" data-target="#mask-modal">Mask Selection</button>
+                    </form>
+                        <!-- Modal -->
+                      <div class="modal fade" id="mask-modal" role="dialog">
+                        <div class="modal-dialog">
+                          <!-- Modal content-->
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title">Image Mask Selection</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row" id="row-img-mask">
+                                    <div class="col-md-4" id="col-img-1"></div>
+                                    <div class="col-md-4" id="col-img-2"></div>
+                                    <div class="col-md-4" id="col-img-3"></div>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <img class="img-fluid" id="uploadImage" src="{{ silhouette_file }}" style="width:100%; height:85%">
                     <form>
-                    <button type="button" class="btn-primary" style="width:100%; height:10%" data-toggle="modal" data-target="#upload-modal">Upload New Mask</button>
+                    <button type="button" class="btn-primary" style="width:100%; height:30px;" data-toggle="modal" data-target="#upload-modal">Upload New Mask</button>
                     </form>
                       <!-- Modal -->
                       <div class="modal fade" id="upload-modal" role="dialog">
@@ -75,10 +96,10 @@
                       </div>
                 </div>
                 <div class="col-md-5">
-                    <img class="img-fluid" id="cloud_image" src="{{ cloud_file }}" style="width:100%; height:89%">
-                    <div style="height:0.5%"></div>
+                    <button class="btn-primary" style="width:100%;height:30px;">Colour Scheme Selection</button>
+                    <img class="img-fluid" id="cloud_image" src="{{ cloud_file }}" style="width:100%; height:85%">
                     <form action="/process" method="POST">
-                        <button type="submit" id="generateCloud" class="btn-primary" name="submit" value="Generate Word Cloud" style="width:100%" enabled>
+                        <button type="submit" id="generateCloud" class="btn-primary" name="submit" value="Generate Word Cloud" style="width:100%;height:30px;" enabled>
                             Generate Word Cloud
                         </button>
                     </form>
@@ -86,6 +107,7 @@
                 <div class="col-md-1">
                 </div>
             </div>
+            <div style="height:5px;width:100%"></div>
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
@@ -105,6 +127,7 @@
 </div>
 <script src="{{url_for('static', filename='upload.js')}}"></script>
 <script src="{{url_for('static', filename='process.js')}}"></script>
+<script src="{{url_for('static', filename='masks.js')}}"></script>
 <script>
     document.querySelector('.custom-file-input').addEventListener('change',function(e){
     var fileName = document.getElementById("image").files[0].name;

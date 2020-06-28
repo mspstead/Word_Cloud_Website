@@ -70,10 +70,11 @@ def upload_image():
 
                     #Save silloutte image template uploaded by user and update the silloutte image shown
                     filename = secure_filename(image.filename)
-                    image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
-                    silhouette_image_path = "static/temp_data/uploads/" + filename
+                    filename_to_save = wc.add_prefix(filename)
+                    image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename_to_save))
+                    silhouette_image_path = "static/temp_data/uploads/" + filename_to_save
 
-                    return jsonify(name=filename,path=silhouette_image_path)
+                    return jsonify(name=filename_to_save,path=silhouette_image_path)
 
                 else:
                     #User did not upload a supported image type.
@@ -154,6 +155,20 @@ def downloadFile():
                         mimetype='text/csv',
                         attachment_filename='word_cloud_stats.csv',
                         as_attachment=True)
+
+@app.route("/imageMasks",methods=["GET"])
+def imageMasks():
+
+    if request.method=='GET':
+
+        folder = 'static/data/imagemasks/'
+
+        file_list = []
+        for filename in os.listdir(folder):
+            if filename.endswith(('.jpg', '.png','.gif','.jpeg')):
+                file_list.append(folder+filename)
+
+        return jsonify(image_paths=file_list)
 
 if __name__ == "__main__":
     app.run(debug=True)
