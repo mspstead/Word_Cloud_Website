@@ -13,7 +13,9 @@ $('#generateCloud').click(function() {
         alert('Please input a reddit comments url, username, or some text!')
     };
 
-    var selectedOption = $("input[name='inlineRadioOptions']:checked").val();
+    var selectedOption = $("input[name='inlineRadioOptions']:checked").val(); //get selected input option
+    var selectedBackground = $("input[name='inlineColourOptions']:checked").val(); //get selected background colour
+    var selectedScheme = $("input[name='ColourScheme']:checked").val(); //get selected colour scheme
 
     $("#generateCloud").html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Generating...').addClass('disabled');
 
@@ -29,7 +31,8 @@ $('#generateCloud').click(function() {
     $.ajax({
         type: 'POST',
         url: '/process',
-        data: JSON.stringify({ "path":silloutte_path, "reddit_url":reddit_url, "user_name":user_name,"text_input":text_input } ),
+        data: JSON.stringify({ "path":silloutte_path, "reddit_url":reddit_url, "user_name":user_name,
+        "text_input":text_input, "backgroundColour":selectedBackground, "colour_scheme":selectedScheme } ),
         contentType: false,
         processData: false,
         dataType: 'json'
@@ -46,7 +49,7 @@ $('#generateCloud').click(function() {
             $("#file-download-btn").attr('value', data['csv_file_path'])
           }
           else if(status=='No data'){ //If reddit url incorrect or returned no data
-            alert('Bad Reddit URL or issue connecting to Reddit.')
+            alert('Bad Reddit URL/Username or issue connecting to Reddit.')
           };
     }).fail(function(data){
         $("#generateCloud").html('Generate Word Cloud').addClass('enabled')

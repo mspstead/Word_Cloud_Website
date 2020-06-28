@@ -99,10 +99,13 @@ def generate_word_cloud():
         reddit_url = data.get('reddit_url') #Get the user entered reddit url
         username = data.get('user_name')
         text_input = data.get('text_input') #Get the text data
+        background_colour = data.get('backgroundColour') #Get the background colour selection
+        colour_scheme = data.get('colour_scheme') #Get selected colour scheme
 
+        #If user has supplied a reddit comments url
         if reddit_url != '': #Check reddit url is not empty
 
-            data = wc.generateRedditWordCloud(silloutte_path, reddit_url)
+            data = wc.generateRedditWordCloud(silloutte_path, reddit_url, background_col=background_colour, colour_selection=colour_scheme)
 
             if(data.get('message')=='success'):
 
@@ -112,9 +115,10 @@ def generate_word_cloud():
 
                 return jsonify(message='No data',cloud_file_path=data.get('img_path'),csv_file_path=data.get('csv_path'))
 
+        #If user has supplied a reddit username
         elif username != '':
 
-            data = wc.generateRedditUserWordCloud(silloutte_path, username)
+            data = wc.generateRedditUserWordCloud(silloutte_path, username, background_col=background_colour, colour_selection=colour_scheme)
 
             if(data.get('message')=='success'):
 
@@ -124,9 +128,11 @@ def generate_word_cloud():
 
                 return jsonify(message='No data',cloud_file_path=data.get('img_path'),csv_file_path=data.get('csv_path'))
 
-
+        #If user has supplied text
         elif text_input !='':
-            data = wc.generateWordCloud(silloutte_path,text_input)
+
+            data = wc.generateWordCloud(silloutte_path,text_input, background_col=background_colour, colour_selection=colour_scheme)
+
             return jsonify(message='success',cloud_file_path=data.get('img_path'),csv_file_path=data.get('csv_path'))
 
         else:
@@ -171,5 +177,5 @@ def imageMasks():
         return jsonify(image_paths=file_list)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
 
