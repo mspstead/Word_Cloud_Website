@@ -34,7 +34,7 @@
             <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
-                    <input id="text_input" class="form-control" type="text" placeholder="Enter reddit url, username, or text here...">
+                    <input id="text_input" class="form-control" type="text" placeholder="Enter reddit url, username, or large text passage here...">
                 </div>
                 <div class="col-md-1"></div>
             </div>
@@ -46,7 +46,7 @@
                     <img class="img-fluid" id="uploadImage" src="{{ silhouette_file }}" style="width:100%; height:89%">
                     <div style="height:0.5%"></div>
                     <form>
-                    <button type="button" class="btn-primary" style="width:100%; height:10%" data-toggle="modal" data-target="#upload-modal">Upload New Silhouette</button>
+                    <button type="button" class="btn-primary" style="width:100%; height:10%" data-toggle="modal" data-target="#upload-modal">Upload New Mask</button>
                     </form>
                       <!-- Modal -->
                       <div class="modal fade" id="upload-modal" role="dialog">
@@ -54,7 +54,7 @@
                           <!-- Modal content-->
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h4 class="modal-title">Silhouette Upload</h4>
+                              <h4 class="modal-title">Image Mask Upload</h4>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                             </div>
                             <div class="modal-body">
@@ -78,7 +78,9 @@
                     <img class="img-fluid" id="cloud_image" src="{{ cloud_file }}" style="width:100%; height:89%">
                     <div style="height:0.5%"></div>
                     <form action="/process" method="POST">
-                        <button type="submit" id="generateCloud" class="btn-primary" name="submit" style="width:100%; height:10%" value="Generate Word Cloud">Generate Word Cloud</button>
+                        <button type="submit" id="generateCloud" class="btn-primary" name="submit" value="Generate Word Cloud" style="width:100%" enabled>
+                            Generate Word Cloud
+                        </button>
                     </form>
                 </div>
                 <div class="col-md-1">
@@ -103,4 +105,11 @@
 </div>
 <script src="{{url_for('static', filename='upload.js')}}"></script>
 <script src="{{url_for('static', filename='process.js')}}"></script>
+<script>
+    document.querySelector('.custom-file-input').addEventListener('change',function(e){
+    var fileName = document.getElementById("image").files[0].name;
+    var nextSibling = e.target.nextElementSibling
+    nextSibling.innerText = fileName
+    })
+</script>
 {% endblock %}

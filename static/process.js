@@ -14,7 +14,8 @@ $('#generateCloud').click(function() {
     };
 
     var selectedOption = $("input[name='inlineRadioOptions']:checked").val();
-    console.log(selectedOption)
+
+    $("#generateCloud").html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Generating...').addClass('disabled');
 
     if(selectedOption=='option1'){
         reddit_url = input
@@ -34,6 +35,8 @@ $('#generateCloud').click(function() {
         dataType: 'json'
     }).done(function(data, textStatus, jqXHR){
 
+          $("#generateCloud").html('Generate Word Cloud').addClass('enabled')
+
           status = data['message'] //check if success or error
 
           if(status=='success'){ //if success show new word cloud image
@@ -44,11 +47,9 @@ $('#generateCloud').click(function() {
           }
           else if(status=='No data'){ //If reddit url incorrect or returned no data
             alert('Bad Reddit URL or issue connecting to Reddit.')
-          }
-          else{
-            alert('Failed to generate word cloud.')
           };
     }).fail(function(data){
-        alert('error!');
+        $("#generateCloud").html('Generate Word Cloud').addClass('enabled')
+        alert('Error: Failed to create word cloud!');
     });
 });
