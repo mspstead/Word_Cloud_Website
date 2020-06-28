@@ -1,6 +1,7 @@
 $('#upload-image').click(function() {
     event.preventDefault();
     var form_data = new FormData($('#upload-form')[0]);
+    $('#upload-image').html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Uploading...').addClass('disabled');
     $.ajax({
         type: 'POST',
         url: '/upload',
@@ -9,6 +10,7 @@ $('#upload-image').click(function() {
         processData: false,
         dataType: 'json'
     }).done(function(data, textStatus, jqXHR){
+        $('#upload-image').html('Upload').addClass('enabled');
         if(data['name'] == 'That file type is not supported.'){
             alert('That file type is not supported.');
         }
@@ -24,6 +26,7 @@ $('#upload-image').click(function() {
             $('#upload-modal').modal('toggle');
         };
     }).fail(function(data){
+        $('#upload-image').html('Upload').addClass('enabled');
         alert('error!');
     });
 });
