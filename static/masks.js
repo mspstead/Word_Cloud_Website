@@ -37,13 +37,13 @@ $('#mask-button').click(function() {
           };
 
     }).fail(function(data){
-        alert('Error: Failed to create word cloud!');
+        alert('Error: Failed to get image masks!');
     });
 });
 
 function maskSelected(element) {
     var src = element.src
-    var mask_src = src.substring(src.indexOf("s"))
+    var mask_src = src.substring(src.indexOf("/s"))
     $("#uploadImage").attr('src', mask_src);
     $('#mask-modal').modal('hide');
 }
