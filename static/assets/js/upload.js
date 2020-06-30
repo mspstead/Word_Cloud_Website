@@ -21,9 +21,7 @@ $('#upload-image').click(function() {
             alert('No file selected');
         }
         else {
-            my_url = "{{ url_for('upload', filename="+data['path']+" }}";
-            $("#uploadImage").attr('src', data['path']); // setting the src attribute of img tag
-            $('#upload-modal').modal('toggle');
+            $("#col-img-1").prepend('<label><input type="radio" name="mask" value='+data['path']+' checked><img class="img-fluid" src='+data['path']+'></label>')
         };
     }).fail(function(data){
         $('#upload-image').html('Upload').addClass('enabled');

@@ -1,188 +1,153 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
-<div class="row">
-		<div class="col-md-12">
-            <h1></h1>
-			<h3>The Reddit word cloud generator</h3>
-            <p>Create a word cloud of a reddit comments section or a particular user's comments mapped to a template of your choice.<br>
-                You can also enter in a passage of text that you would like generate a word cloud for.<br>
-                Select from one of our pre-made sillouttes or <a href="https://www.instructables.com/id/Remove-image-background-and-turn-it-into-silhouett/">create your own</a> and upload it.
-            </p>
-		</div>
-</div>
-<div class="card">
-        <div class="card-block">
+    <div class="container hero">
             <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked>
-                      <label class="form-check-label" for="inlineRadio1">Reddit Comments Url</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                      <label class="form-check-label" for="inlineRadio2">Reddit Username</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
-                      <label class="form-check-label" for="inlineRadio3">Raw Text</label>
-                    </div>
-                </div>
-                <div class="col-md-1"></div>
-            </div>
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
-                    <input id="text_input" class="form-control" type="text" placeholder="Enter reddit url, username, or large text passage here...">
-                </div>
-                <div class="col-md-1"></div>
-            </div>
-            <div style="height:5px"></div>
-            <div class="row">
-                <div class="col-md-1">
-                </div>
-                <div class="col-md-5">
-                    <form action="/imageMasks" method="GET">
-                        <button id="mask-button" class="btn-primary" style="width:100%;height:30px;" data-toggle="modal" data-target="#mask-modal">Mask Selection</button>
-                    </form>
-                        <!-- Modal -->
-                      <div class="modal fade" id="mask-modal" role="dialog">
-                        <div class="modal-dialog">
-                          <!-- Modal content-->
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h4 class="modal-title">Image Mask Selection</h4>
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row" id="row-img-mask">
-                                    <div class="col-md-4" id="col-img-1"></div>
-                                    <div class="col-md-4" id="col-img-2"></div>
-                                    <div class="col-md-4" id="col-img-3"></div>
-                                </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    <img class="img-fluid" id="uploadImage" src="{{ silhouette_file }}" style="width:100%; height:85%">
-                    <form>
-                    <button type="button" class="btn-primary" style="width:100%; height:30px;" data-toggle="modal" data-target="#upload-modal">Upload New Mask</button>
-                    </form>
-                      <!-- Modal -->
-                      <div class="modal fade" id="upload-modal" role="dialog">
-                        <div class="modal-dialog">
-                          <!-- Modal content-->
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h4 class="modal-title">Image Mask Upload</h4>
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="/upload" method="POST" id="upload-form" enctype="multipart/form-data">
-                                    <script>function filesize(elem){document.cookie = `filesize=${elem.files[0].size}`}</script>
-                                    <div class="form-group">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" name="image" id="image" oninput="filesize(this);">
-                                        <label class="custom-file-label" for="image">Select image...</label>
+                <div class="col-md-8 offset-md-2">
+                    <h2 class="text-center text-secondary">The Reddit Word Cloud Creator</h2>
+                    <div class="modal fade" role="dialog" tabindex="-1" id="colours-modal">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Select your colour scheme</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="inlineColourOptions" id="white-bg" value="white" checked>
+                                            <label class="form-check-label" for="white-bg">White Background</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="inlineColourOptions" id="black-bg" value="black">
+                                            <label class="form-check-label" for="black-bg">Black Background</label>
+                                        </div>
                                     </div>
-                                    </div>
-                                    <button type="submit" id="upload-image" class="btn btn-primary" value="Upload">Upload</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                </form>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                </div>
-                <div class="col-md-5">
-                    <button class="btn-primary" style="width:100%;height:30px;" data-toggle="modal" data-target="#colour-modal">Colour Scheme Settings</button>
-                    <!-- Modal -->
-                      <div class="modal fade" id="colour-modal" role="dialog">
-                        <div class="modal-dialog">
-                          <!-- Modal content-->
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h4 class="modal-title">Colour Scheme Settings</h4>
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="form-check form-check-inline">
-                                      <input class="form-check-input" type="radio" name="inlineColourOptions" id="white-bg" value="white" checked>
-                                      <label class="form-check-label" for="white-bg">White Background</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                      <input class="form-check-input" type="radio" name="inlineColourOptions" id="black-bg" value="black">
-                                      <label class="form-check-label" for="black-bg">Black Background</label>
+                                    <div class="row">
+                                        <label>
+                                          <input type="radio" name="ColourScheme" value="viridis" checked>
+                                          <img class="img-fluid" style="width:90%" src="static/data/images/viridis.png">
+                                        </label>
+                                        <label>
+                                          <input type="radio" name="ColourScheme" value="magma">
+                                          <img class="img-fluid" style="width:90%" src="static/data/images/magma.png">
+                                        </label>
+                                        <label>
+                                          <input type="radio" name="ColourScheme" value="flag">
+                                          <img class="img-fluid" style="width:90%" src="static/data/images/flag.png">
+                                        </label>
+                                        <label>
+                                          <input type="radio" name="ColourScheme" value="prism">
+                                          <img class="img-fluid" style="width:90%" src="static/data/images/Prisim.png">
+                                        </label>
+                                        <label>
+                                          <input type="radio" name="ColourScheme" value="Paired">
+                                          <img class="img-fluid" style="width:90%" src="static/data/images/Paired.png">
+                                        </label>
+                                        <label>
+                                          <input type="radio" name="ColourScheme" value="Accent">
+                                          <img class="img-fluid" style="width:90%" src="static/data/images/Accent.png">
+                                        </label>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <label>
-                                      <input type="radio" name="ColourScheme" value="viridis" checked>
-                                      <img class="img-fluid" style="width:90%" src="static/data/images/viridis.png">
-                                    </label>
-                                    <label>
-                                      <input type="radio" name="ColourScheme" value="magma">
-                                      <img class="img-fluid" style="width:90%" src="static/data/images/magma.png">
-                                    </label>
-                                    <label>
-                                      <input type="radio" name="ColourScheme" value="flag">
-                                      <img class="img-fluid" style="width:90%" src="static/data/images/flag.png">
-                                    </label>
-                                    <label>
-                                      <input type="radio" name="ColourScheme" value="prism">
-                                      <img class="img-fluid" style="width:90%" src="static/data/images/Prisim.png">
-                                    </label>
-                                    <label>
-                                      <input type="radio" name="ColourScheme" value="Paired">
-                                      <img class="img-fluid" style="width:90%" src="static/data/images/Paired.png">
-                                    </label>
-                                    <label>
-                                      <input type="radio" name="ColourScheme" value="Accent">
-                                      <img class="img-fluid" style="width:90%" src="static/data/images/Accent.png">
-                                    </label>
+                                <div class="modal-footer"><button class="btn btn-primary" type="button" data-dismiss="modal">Save</button></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade visible" role="dialog" tabindex="-1" id="info-modal">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">How to use</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+                                <div class="modal-body">
+                                    <ol>
+                                        <li>Select the <strong>shape</strong> of your word cloud, or <strong>upload your own</strong> silloutte image mask you have <a href="https://www.instructables.com/id/Remove-image-background-and-turn-it-into-silhouett/" target="_blank">created yourself.</a></li>
+                                        <li>Select the <strong>colour scheme</strong> for your word cloud.</li>
+                                        <li>Input your text to analyse, this could be a <strong>reddit comments thread url</strong>, a <strong>reddit username</strong> whose comments you want to analyse, or a <strong>passage of raw text</strong>.</li>
+                                        <li>Hit <strong>Run</strong> and create your wordcloud.</li>
+                                        <li><strong>Download</strong> either the word cloud image, or the stats behind the cloud.</li>
+                                    </ol>
                                 </div>
                             </div>
-                          </div>
                         </div>
-                      </div>
-                    <img class="img-fluid" id="cloud_image" src="{{ cloud_file }}" style="width:100%; height:85%">
-                    <form action="/process" method="POST">
-                        <button type="submit" id="generateCloud" class="btn-primary" name="submit" value="Generate Word Cloud" style="width:100%;height:30px;" enabled>
-                            Generate Word Cloud
-                        </button>
-                    </form>
-                </div>
-                <div class="col-md-1">
-                </div>
+                    </div>
+                    <div class="modal fade" role="dialog" tabindex="-1" id="input-modal">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Input</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+                                <div class="modal-body">
+                                    <label id="input-type-label">Input type: Reddit Comments</label>
+                                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                      <label class="btn btn-primary btn-sm active">
+                                        <input type="radio" name="text-options" id="option1" autocomplete="off" value="comments" checked> Reddit Comments
+                                      </label>
+                                      <label class="btn btn-primary btn-sm">
+                                        <input type="radio" name="text-options" id="option2" autocomplete="off" value="user"> Reddit Username
+                                      </label>
+                                      <label class="btn btn-primary btn-sm">
+                                        <input type="radio" name="text-options" id="option3" autocomplete="off" value="raw"> Raw Text
+                                      </label>
+                                    </div>
+                                    <div style="width: 100%;height: 5px;"></div>
+                                        <textarea id="text-input" style="width: 100%;height: 200px;display: none;" value=""></textarea>
+                                        <input type="text" id="reddit-input" style="width: 100%;" value=""></div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" type="button" data-dismiss="modal">Save</button><
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" role="dialog" tabindex="-1" id="shape-modal">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Select a word cloud shape</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
+                                <div class="modal-body">
+                                    <form action="/upload" method="POST" id="upload-form" enctype="multipart/form-data">
+                                        <script>function filesize(elem){document.cookie = `filesize=${elem.files[0].size}`}</script>
+                                        <div class="form-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" name="image" id="image" oninput="filesize(this);">
+                                            <label class="custom-file-label" for="image">Select image...</label>
+                                        </div>
+                                        </div>
+                                        <button type="submit" id="upload-image" class="btn btn-primary" value="Upload">Upload</button>
+                                    </form>
+                                    <div style="height:3px; width:100%"></div>
+                                    <div class="row" id="row-img-mask"></div>
+                                </div>
+                                <div class="modal-footer"><button class="btn btn-primary" type="button" data-dismiss="modal">Save</button></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-toolbar float-left">
+                        <div class="btn-group" role="group"><button class="btn btn-primary btn-sm border rounded" id="info-button" type="button"><i class="fa fa-info-circle"></i></button></div>
+                        <div class="btn-group" role="group"><button class="btn btn-primary btn-sm border rounded" id="shape-button" type="button">Shapes</button></div>
+                        <div class="btn-group" role="group"><button class="btn btn-primary btn-sm border rounded" id="colour-button" type="button">Colours</button></div>
+                        <div class="btn-group" role="group"><button class="btn btn-primary btn-sm border rounded" id="input-button" type="button">Input</button></div>
+                        <form action="/process" method="POST">
+                            <div class="btn-group" role="group"><button class="btn btn-success btn-sm border rounded" id="run-button" type="submit">Run</button></div>
+                        </form>
+                    </div>
+                    <div class="btn-toolbar float-left">
+                        <div class="btn-group" role="group">
+                            <form action="/downloadImage" method="POST">
+                                <button class="btn btn-primary btn-sm border rounded" name="download-image" id="cloud-button" type="submit" value="{{ cloud_file }}"><i class="fa fa-download"></i>&nbsp;Cloud</button>
+                            </form>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <form action="/downloadFile" method="POST">
+                                <button class="btn btn-primary btn-sm border rounded" name="download-file" id="stats-button" type="submit" value="{{ csv_file }}"><i class="fa fa-download"></i>&nbsp;Stats</button>
+                            </form>
+                        </div>
+                    </div><img class="img-fluid border rounded border-info" width="100%" id="cloud_image" src="{{ cloud_file }}"></div>
             </div>
-            <div style="height:5px;width:100%"></div>
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
-                    <form action="/downloadImage" method="POST">
-                        <button id="img-download-btn" name="download-image" type="submit" class="btn-success" style="width:100%; height:48%" value="{{ cloud_file }}">Download Word Cloud</button>
-                    </form>
-                    <div style="width:100%; height:2%">    </div>
-                    <form action="/downloadFile" method="POST">
-                        <button id="file-download-btn" name="download-file" type="submit" class="btn-success" style="width:100%; height:48%" value="{{ csv_file }}">Download Word Statistics</button>
-                    </form>
-                    <div style="width:100%; height:2%">    </div>
-                </div>
-                <div class="col-md-1"></div>
-            </div>
-            <div style="height:5px"></div>
         </div>
-</div>
-<script src="{{url_for('static', filename='upload.js')}}"></script>
-<script src="{{url_for('static', filename='process.js')}}"></script>
-<script src="{{url_for('static', filename='masks.js')}}"></script>
-<script>
-    document.querySelector('.custom-file-input').addEventListener('change',function(e){
-    var fileName = document.getElementById("image").files[0].name;
-    var nextSibling = e.target.nextElementSibling
-    nextSibling.innerText = fileName
-    })
-</script>
+    </div>
+    </div>
+    <script src="static/assets/js/jquery.min.js"></script>
+    <script src="static/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="static/assets/js/modals.js"></script>
+    <script src="static/assets/js/upload.js"></script>
+    <script src="static/assets/js/process.js"></script>
+    <script src="static/assets/js/masks.js"></script>
 {% endblock %}

@@ -1,31 +1,44 @@
-$('#generateCloud').click(function() {
+$('#run-button').click(function() {
 
     event.preventDefault();
 
-    var silloutte_path = $('#uploadImage').attr('src');
-    var input = $('#text_input').val(); //Get text data using id
+    //Check which image mask is selected
+    var silloutte_path = $('input[name=mask]:checked').val();
 
-    var reddit_url = ''
-    var user_name = ''
-    var text_input = ''
+    //Get text input option
+    var text_input_option = $('input[name=text-options]:checked').val();
+
+    //initialise scheme
+    var selectedBackground = $("input[name='inlineColourOptions']:checked").val(); //get selected background colour
+    var selectedScheme = $("input[name='ColourScheme']:checked").val(); //get selected colour scheme
+
+    //initliase input
+    var input = ''
+
+    if(text_input_option=='comments' || text_input_option=='user'){
+        input = $('#reddit-input').val();
+    }
+    else if(text_input_option=='raw'){
+        input = $('#text-input').val();
+    };
 
     if(input==''){ //check if input fields are empty
         alert('Please input a reddit comments url, username, or some text!')
     };
 
-    var selectedOption = $("input[name='inlineRadioOptions']:checked").val(); //get selected input option
-    var selectedBackground = $("input[name='inlineColourOptions']:checked").val(); //get selected background colour
-    var selectedScheme = $("input[name='ColourScheme']:checked").val(); //get selected colour scheme
+    var reddit_url = ''
+    var user_name = ''
+    var text_input = ''
 
-    $("#generateCloud").html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Generating...').addClass('disabled');
+    $("#run-button").html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Running...').addClass('disabled');
 
-    if(selectedOption=='option1'){
+    if(text_input_option=='comments'){
         reddit_url = input
     }
-    else if(selectedOption=='option2'){
+    else if(text_input_option=='user'){
         user_name = input
     }
-    else if(selectedOption=='option3'){
+    else if(text_input_option=='raw'){
         text_input = input
     };
     $.ajax({
@@ -38,15 +51,14 @@ $('#generateCloud').click(function() {
         dataType: 'json'
     }).done(function(data, textStatus, jqXHR){
 
-          $("#generateCloud").html('Generate Word Cloud').addClass('enabled')
+          $("#run-button").html('Run').addClass('enabled')
 
           status = data['message'] //check if success or error
 
           if(status=='success'){ //if success show new word cloud image
-            my_url = "{{ url_for('upload', filename="+data['cloud_file_path']+" }}";
             $("#cloud_image").attr('src', data['cloud_file_path']); // setting the src attribute of img tag
-            $("#img-download-btn").attr('value', data['cloud_file_path'])
-            $("#file-download-btn").attr('value', data['csv_file_path'])
+            $("#cloud-button").attr('value', data['cloud_file_path'])
+            $("#stats-button").attr('value', data['csv_file_path'])
           }
           else if(status=='No data'){ //If reddit url incorrect or returned no data
             alert('Bad Reddit URL/Username or issue connecting to Reddit.')

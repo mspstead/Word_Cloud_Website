@@ -1,4 +1,9 @@
-$('#mask-button').click(function() {
+document.querySelector('.custom-file-input').addEventListener('change',function(e){
+    var fileName = document.getElementById("image").files[0].name;
+    var nextSibling = e.target.nextElementSibling;
+    nextSibling.innerText = fileName;
+});
+$(window).on('load',function() {
     event.preventDefault();
 
     $("#row-img-mask").html('<div class="col-md-4" id="col-img-1"></div><div class="col-md-4" id="col-img-2"></div><div class="col-md-4" id="col-img-3"></div>')
@@ -20,17 +25,22 @@ $('#mask-button').click(function() {
 
           for(var path of image_paths){
             if(col_1_count!=0){
-                var img = '<input onclick="maskSelected(this)" type="image" src='+path+' class="img-fluid" style="height:100% width:100%"></input>'
+                if(col_1_count==num_images_per_col){
+                    var img = '<label><input type="radio" name="mask" value='+path+' checked><img class="img-fluid" src='+path+'></label>'
+                }
+                else{
+                    var img = '<label><input type="radio" name="mask" value='+path+'><img class="img-fluid" src='+path+'></label>'
+                };
                 $('#col-img-1').append(img);
                 col_1_count = col_1_count - 1
             }
             else if(col_2_count!=0){
-                var img = '<input onclick="maskSelected(this)" type="image" src='+path+' class="img-fluid" style="height:100% width:100%"></input>'
+                var img = '<label><input type="radio" name="mask" value='+path+'><img class="img-fluid" src='+path+'></label>'
                 $('#col-img-2').append(img);
                 col_2_count = col_2_count - 1
             }
             else if(col_3_count!=0){
-                var img = '<input onclick="maskSelected(this)" type="image" src='+path+' class="img-fluid" style="height:100% width:100%"></input>'
+                var img = '<label><input type="radio" name="mask" value='+path+'><img class="img-fluid" src='+path+'></label>'
                 $('#col-img-3').append(img);
                 col_3_count = col_3_count - 1
             };
@@ -40,10 +50,3 @@ $('#mask-button').click(function() {
         alert('Error: Failed to get image masks!');
     });
 });
-
-function maskSelected(element) {
-    var src = element.src
-    var mask_src = src.substring(src.indexOf("/s"))
-    $("#uploadImage").attr('src', mask_src);
-    $('#mask-modal').modal('hide');
-}
