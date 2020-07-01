@@ -1,7 +1,7 @@
 $('#upload-image').click(function() {
     event.preventDefault();
     var form_data = new FormData($('#upload-form')[0]);
-    $('#upload-image').html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Uploading...').addClass('disabled');
+    $('#upload-image').html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Uploading...').prop('disabled',true);
     $.ajax({
         type: 'POST',
         url: '/upload',
@@ -10,7 +10,7 @@ $('#upload-image').click(function() {
         processData: false,
         dataType: 'json'
     }).done(function(data, textStatus, jqXHR){
-        $('#upload-image').html('Upload').addClass('enabled');
+        $('#upload-image').html('Upload').prop('disabled',false);
         if(data['name'] == 'That file type is not supported.'){
             alert('That file type is not supported.');
         }
@@ -24,7 +24,7 @@ $('#upload-image').click(function() {
             $("#uploaded-mask").prepend('<label><input type="radio" name="upload-mask" value='+data['path']+' checked><img class="img-fluid" src='+data['path']+'></label>')
         };
     }).fail(function(data){
-        $('#upload-image').html('Upload').addClass('enabled');
+        $('#upload-image').html('Upload').prop('disabled',false);
         alert('error!');
     });
 });

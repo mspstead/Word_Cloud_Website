@@ -35,7 +35,7 @@ $('#run-button').click(function() {
     var user_name = ''
     var text_input = ''
 
-    $("#run-button").html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Running...').addClass('disabled');
+    $("#run-button").html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Creating...').prop('disabled',true);
 
     if(text_input_option=='comments'){
         reddit_url = input
@@ -56,7 +56,7 @@ $('#run-button').click(function() {
         dataType: 'json'
     }).done(function(data, textStatus, jqXHR){
 
-          $("#run-button").html('Run').addClass('enabled')
+          $("#run-button").html('Create Cloud!').prop('disabled',false);
 
           status = data['message'] //check if success or error
 
@@ -69,7 +69,7 @@ $('#run-button').click(function() {
             alert('Bad Reddit URL/Username or issue connecting to Reddit.')
           };
     }).fail(function(data){
-        $("#generateCloud").html('Generate Word Cloud').addClass('enabled')
+        $("#run-button").html('Create Cloud!').prop('disabled',false);
         alert('Error: Failed to create word cloud!');
     });
 });
