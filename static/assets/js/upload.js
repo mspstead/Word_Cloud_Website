@@ -21,7 +21,7 @@ $('#upload-image').click(function() {
             alert('No file selected');
         }
         else {
-            $("#col-img-1").prepend('<label><input type="radio" name="mask" value='+data['path']+' checked><img class="img-fluid" src='+data['path']+'></label>')
+            $("#uploaded-mask").prepend('<label><input type="radio" name="upload-mask" value='+data['path']+' checked><img class="img-fluid" src='+data['path']+'></label>')
         };
     }).fail(function(data){
         $('#upload-image').html('Upload').addClass('enabled');

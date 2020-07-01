@@ -3,7 +3,12 @@ $('#run-button').click(function() {
     event.preventDefault();
 
     //Check which image mask is selected
-    var silloutte_path = $('input[name=mask]:checked').val();
+    if($('input[name=upload-mask]:checked').val()!=null){
+        var silloutte_path = $('input[name=upload-mask]:checked').val();
+    }
+    else{
+        var silloutte_path = $('input[name=mask]:checked').val();
+    };
 
     //Get text input option
     var text_input_option = $('input[name=text-options]:checked').val();

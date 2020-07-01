@@ -46,6 +46,12 @@ $(window).on('load',function() {
             };
           };
 
+          $('input:radio[name="mask"]').change(function(){
+             console.log('checked');
+             $('input:radio[name="upload-mask"]').prop('checked',false);
+
+          });
+
     }).fail(function(data){
         alert('Error: Failed to get image masks!');
     });

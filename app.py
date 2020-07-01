@@ -5,10 +5,10 @@ import word_cloud as wc
 
 app = Flask(__name__)
 
-app.config["IMAGE_UPLOADS"] = '/home/ubuntu/Word_Cloud_Website/static/temp_data/uploads'
-app.config["IMAGE_EXPORTS"] = '/home/ubuntu/Word_Cloud_Website/static/temp_data/exports'
-#app.config["IMAGE_UPLOADS"] = '/Users/mike/Documents/Word_Cloud_Website/static/temp_data/uploads'
-#app.config["IMAGE_EXPORTS"] = '/Users/mike/Documents/Word_Cloud_Website/static/temp_data/exports'
+#ßapp.config["IMAGE_UPLOADS"] = '/home/ubuntu/Word_Cloud_Website/static/temp_data/uploads'
+#app.config["IMAGE_EXPORTS"] = '/home/ubuntu/Word_Cloud_Website/static/temp_data/exports'
+app.config["IMAGE_UPLOADS"] = '/Users/mike/Documents/Word_Cloud_Website/static/temp_data/uploads'
+app.config["IMAGE_EXPORTS"] = '/Users/mike/Documents/Word_Cloud_Website/static/temp_data/exports'
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["JPEG", "JPG", "PNG", "GIF"]
 app.config["MAX_IMAGE_FILESIZE"] = 5 * 1024 * 1024
 
