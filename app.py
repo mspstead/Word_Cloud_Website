@@ -201,7 +201,6 @@ def imageMasks():
         for filename in os.listdir(folder):
             if filename.endswith(('.jpg', '.png','.gif','.jpeg')):
                 file_list.append(folder+filename)
-
         return jsonify(image_paths=file_list)
 
 if __name__ == "__main__":

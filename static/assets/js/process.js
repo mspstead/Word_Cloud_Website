@@ -17,17 +17,17 @@ $('#run-button').click(function() {
     var page_input_option = $('input[name=page-options]:checked').val();
 
     //Get stats checked option
-    var stats_selection=''
+    var stats_selection='';
     if($('#show-stats').is(":checked")==true){
-        stats_selection = 'checked'
-    }
+        stats_selection = 'checked';
+    };
 
     //initialise scheme
     var selectedBackground = $("input[name='inlineColourOptions']:checked").val(); //get selected background colour
     var selectedScheme = $("input[name='ColourScheme']:checked").val(); //get selected colour scheme
 
     //initliase input
-    var input = ''
+    var input = '';
 
     if(text_input_option=='comments' || text_input_option=='user' || text_input_option=='twitter'){
         input = $('#reddit-input').val();
@@ -40,12 +40,12 @@ $('#run-button').click(function() {
         alert('Please input a reddit comments url, username, or some text!')
     };
 
-    var reddit_url = ''
-    var user_name = ''
-    var twitter_user = ''
-    var text_input = ''
+    var reddit_url = '';
+    var user_name = '';
+    var twitter_user = '';
+    var text_input = '';
 
-    $("#run-button").html('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>Creating...').prop('disabled',true);
+    $("#run-button").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Creating...').prop('disabled',true);
 
     if(text_input_option=='comments'){
         reddit_url = input

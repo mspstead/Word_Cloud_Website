@@ -77,28 +77,28 @@
                                 <div class="modal-body">
                                     <label id="input-type-label">Input type: Reddit Comments URL</label>
                                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                        <label class="btn btn-primary btn-sm active">
-                                            <input type="radio" name="text-options" id="option3" autocomplete="off" value="raw" checked> Raw Text
+                                        <label class="btn btn-primary btn-sm">
+                                            <input type="radio" name="text-options" id="option4" autocomplete="off" value="twitter" placeholder="Example: @realdonaldtrump or realdonaldtrump" checked> Twitter User (Beta)
                                         </label>
                                         <label class="btn btn-primary btn-sm">
                                             <input type="radio" name="text-options" id="option1" autocomplete="off" value="comments"> Reddit Comments
                                         </label>
                                         <label class="btn btn-primary btn-sm">
-                                            <input type="radio" name="text-options" id="option2" autocomplete="off" value="user" placeholder="spez"> Reddit Username
+                                            <input type="radio" name="text-options" id="option2" autocomplete="off" value="user" placeholder="Example: spez"> Reddit Username
                                         </label>
-                                        <label class="btn btn-primary btn-sm">
-                                            <input type="radio" name="text-options" id="option4" autocomplete="off" value="twitter" placeholder="@realdonaldtrump or realdonaldtrump"> Twitter User (Beta)
+                                        <label class="btn btn-primary btn-sm active">
+                                            <input type="radio" name="text-options" id="option3" autocomplete="off" value="raw"> Raw Text
                                         </label>
                                     </div>
                                     <div style="width: 100%;height: 5px;"></div>
-                                    <textarea id="text-input" style="width: 100%;height: 200px;" value=""></textarea>
-                                    <input type="text" id="reddit-input" style="width: 100%;display: none;" value="" placeholder="">
+                                    <textarea id="text-input" style="width: 100%;height: 200px;display: none;" value=""></textarea>
+                                    <input type="text" id="reddit-input" style="width: 100%;" value="" placeholder="Example: @RealDonaldTrump or realdonaldtrump">
                                     <div style="width: 100%;height: 5px;"></div>
                                     <div class="checkbox">
                                         <label><input type="checkbox" id="show-stats">Show stats legend</label>
                                     </div>
                                     <div style="width: 100%;height: 5px;"></div>
-                                    <div id="depth-selection" style="display: none;">
+                                    <div id="depth-selection" style="">
                                         <label>Search Depth*:   </label>
                                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                             <label class="btn btn-primary btn-sm active">
@@ -179,7 +179,7 @@
                     </div>
                     <div class="btn-toolbar float-left">
                         <div class="btn-group" role="group"><button class="btn btn-primary btn-sm border rounded" id="info-button" type="button"><i class="fa fa-info-circle"></i> Guide</button></div>
-                        <div class="btn-group" role="group"><button class="btn btn-primary btn-sm border rounded" id="input-button" type="button">Input</button></div>
+                        <div class="btn-group" role="group"><button class="btn btn-primary btn-sm border rounded" id="input-button" type="button">Text Input</button></div>
                         <div class="btn-group" role="group"><button class="btn btn-primary btn-sm border rounded" id="shape-button" type="button">Shapes</button></div>
                         <div class="btn-group" role="group"><button class="btn btn-primary btn-sm border rounded" id="colour-button" type="button">Colours</button></div>
                         <form action="/process" method="POST">
