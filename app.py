@@ -97,6 +97,11 @@ def generate_word_cloud():
 
         data = request.get_json(force=True) #Get the data from the ajax
 
+        if(data.get('stats_selection')=='checked'):
+            stats_select = True
+        else:
+            stats_select = False
+
         silloutte_path = data.get('path') #Get the current silloutte image
 
         reddit_url = data.get('reddit_url') #Get the user entered reddit url
@@ -112,7 +117,7 @@ def generate_word_cloud():
         #If user has supplied a reddit comments url
         if reddit_url != '': #Check reddit url is not empty
 
-            data = wc.generateRedditCommentsStats(silloutte_path, reddit_url, background_col=background_colour, colour_selection=colour_scheme)
+            data = wc.generateRedditCommentsStats(silloutte_path, reddit_url, background_col=background_colour, colour_selection=colour_scheme, legend=stats_select)
 
             if(data.get('message')=='success'):
 
@@ -125,7 +130,7 @@ def generate_word_cloud():
         #If user has supplied a reddit username
         elif username != '':
 
-            data = wc.generateRedditUserStats(silloutte_path, username, background_col=background_colour, colour_selection=colour_scheme)
+            data = wc.generateRedditUserStats(silloutte_path, username, background_col=background_colour, colour_selection=colour_scheme,legend=stats_select)
 
             if(data.get('message')=='success'):
 
@@ -139,7 +144,7 @@ def generate_word_cloud():
         # If user has supplied a twitter username
         elif twitter != '':
             data = wc.generateTwitterUserStats(silloutte_path, twitter, background_col=background_colour,
-                                                  colour_selection=colour_scheme,page_nr=int(page_depth))
+                                                  colour_selection=colour_scheme,page_nr=int(page_depth),legend=stats_select)
 
             if (data.get('message') == 'success'):
 
@@ -154,7 +159,7 @@ def generate_word_cloud():
         #If user has supplied text
         elif text_input !='':
 
-            data = wc.generateRawTextStats(silloutte_path,text_input, background_col=background_colour, colour_selection=colour_scheme)
+            data = wc.generateRawTextStats(silloutte_path,text_input, background_col=background_colour, colour_selection=colour_scheme,legend=stats_select)
 
             return jsonify(message='success',cloud_file_path=data.get('img_path'),csv_file_path=data.get('csv_path'))
 

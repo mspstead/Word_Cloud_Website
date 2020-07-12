@@ -16,6 +16,12 @@ $('#run-button').click(function() {
     //Get page_input_option for twitter search depth
     var page_input_option = $('input[name=page-options]:checked').val();
 
+    //Get stats checked option
+    var stats_selection=''
+    if($('#show-stats').is(":checked")==true){
+        stats_selection = 'checked'
+    }
+
     //initialise scheme
     var selectedBackground = $("input[name='inlineColourOptions']:checked").val(); //get selected background colour
     var selectedScheme = $("input[name='ColourScheme']:checked").val(); //get selected colour scheme
@@ -57,7 +63,8 @@ $('#run-button').click(function() {
         type: 'POST',
         url: '/process',
         data: JSON.stringify({ "path":silloutte_path, "reddit_url":reddit_url, "user_name":user_name,"twitter":twitter_user,
-        "text_input":text_input, "page_depth":page_input_option,"backgroundColour":selectedBackground, "colour_scheme":selectedScheme } ),
+        "text_input":text_input, "page_depth":page_input_option, 'stats_selection':stats_selection,
+        "backgroundColour":selectedBackground, "colour_scheme":selectedScheme } ),
         contentType: false,
         processData: false,
         dataType: 'json'
