@@ -98,8 +98,13 @@ def generate_word_cloud():
         data = request.get_json(force=True) #Get the data from the ajax
 
         silloutte_path = data.get('path') #Get the current silloutte image
+
         reddit_url = data.get('reddit_url') #Get the user entered reddit url
-        username = data.get('user_name')
+        username = data.get('user_name') #Get reddit username
+
+        twitter = data.get('twitter') #Get twitter handle
+        page_depth = data.get('page_depth') #Page search depth for twitter data retrieval
+
         text_input = data.get('text_input') #Get the text data
         background_colour = data.get('backgroundColour') #Get the background colour selection
         colour_scheme = data.get('colour_scheme') #Get selected colour scheme
@@ -107,7 +112,7 @@ def generate_word_cloud():
         #If user has supplied a reddit comments url
         if reddit_url != '': #Check reddit url is not empty
 
-            data = wc.generateRedditWordCloud(silloutte_path, reddit_url, background_col=background_colour, colour_selection=colour_scheme)
+            data = wc.generateRedditCommentsStats(silloutte_path, reddit_url, background_col=background_colour, colour_selection=colour_scheme)
 
             if(data.get('message')=='success'):
 
@@ -120,7 +125,7 @@ def generate_word_cloud():
         #If user has supplied a reddit username
         elif username != '':
 
-            data = wc.generateRedditUserWordCloud(silloutte_path, username, background_col=background_colour, colour_selection=colour_scheme)
+            data = wc.generateRedditUserStats(silloutte_path, username, background_col=background_colour, colour_selection=colour_scheme)
 
             if(data.get('message')=='success'):
 
@@ -130,10 +135,26 @@ def generate_word_cloud():
 
                 return jsonify(message='No data',cloud_file_path=data.get('img_path'),csv_file_path=data.get('csv_path'))
 
+
+        # If user has supplied a twitter username
+        elif twitter != '':
+            data = wc.generateTwitterUserStats(silloutte_path, twitter, background_col=background_colour,
+                                                  colour_selection=colour_scheme,page_nr=int(page_depth))
+
+            if (data.get('message') == 'success'):
+
+                return jsonify(message='success', cloud_file_path=data.get('img_path'),
+                                   csv_file_path=data.get('csv_path'))
+
+            else:
+
+                return jsonify(message='No data', cloud_file_path=data.get('img_path'),
+                                   csv_file_path=data.get('csv_path'))
+
         #If user has supplied text
         elif text_input !='':
 
-            data = wc.generateWordCloud(silloutte_path,text_input, background_col=background_colour, colour_selection=colour_scheme)
+            data = wc.generateRawTextStats(silloutte_path,text_input, background_col=background_colour, colour_selection=colour_scheme)
 
             return jsonify(message='success',cloud_file_path=data.get('img_path'),csv_file_path=data.get('csv_path'))
 

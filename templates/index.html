@@ -4,7 +4,7 @@
     <div class="container hero">
             <div class="row">
                 <div class="col-md-8 offset-md-2">
-                    <h2 class="text-center text-secondary">The Reddit Word Cloud Creator</h2>
+                    <h2 class="text-center text-secondary">The Social Media Word Cloud Creator</h2>
                     <div class="modal fade" role="dialog" tabindex="-1" id="colours-modal">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -59,7 +59,7 @@
                                     <h4 class="modal-title">How to use</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button></div>
                                 <div class="modal-body">
                                     <ol>
-                                        <li>Input your text to analyse, this could be a <strong>reddit comments thread url</strong>, a <strong>reddit username</strong> whose comments you want to analyse, or a <strong>passage of raw text</strong>.</li>
+                                        <li>Input your text to analyse, this could be a <strong>twitter user's handle</strong> to analyse their statuses, a <strong>reddit comments thread url</strong> to analyse the thread comments, a <strong>reddit username</strong> whose comments you want to analyse, or a <strong>passage of raw text</strong>.</li>
                                         <li>Select the <strong>shape</strong> of your word cloud, or <strong>upload your own</strong> silloutte image mask you have <a href="https://www.instructables.com/id/Remove-image-background-and-turn-it-into-silhouett/" target="_blank">created yourself.</a></li>
                                         <li>Select the <strong>colour scheme</strong> for your word cloud.</li>
                                         <li>Hit <strong>Create</strong> and create your wordcloud.</li>
@@ -77,19 +77,50 @@
                                 <div class="modal-body">
                                     <label id="input-type-label">Input type: Reddit Comments URL</label>
                                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                      <label class="btn btn-primary btn-sm active">
-                                        <input type="radio" name="text-options" id="option1" autocomplete="off" value="comments" checked> Reddit Comments
-                                      </label>
-                                      <label class="btn btn-primary btn-sm">
-                                        <input type="radio" name="text-options" id="option2" autocomplete="off" value="user"> Reddit Username
-                                      </label>
-                                      <label class="btn btn-primary btn-sm">
-                                        <input type="radio" name="text-options" id="option3" autocomplete="off" value="raw"> Raw Text
-                                      </label>
+                                        <label class="btn btn-primary btn-sm active">
+                                            <input type="radio" name="text-options" id="option3" autocomplete="off" value="raw" checked> Raw Text
+                                        </label>
+                                        <label class="btn btn-primary btn-sm">
+                                            <input type="radio" name="text-options" id="option1" autocomplete="off" value="comments"> Reddit Comments
+                                        </label>
+                                        <label class="btn btn-primary btn-sm">
+                                            <input type="radio" name="text-options" id="option2" autocomplete="off" value="user" placeholder="spez"> Reddit Username
+                                        </label>
+                                        <label class="btn btn-primary btn-sm">
+                                            <input type="radio" name="text-options" id="option4" autocomplete="off" value="twitter" placeholder="@realdonaldtrump or realdonaldtrump"> Twitter User (Beta)
+                                        </label>
                                     </div>
                                     <div style="width: 100%;height: 5px;"></div>
-                                        <textarea id="text-input" style="width: 100%;height: 200px;display: none;" value=""></textarea>
-                                        <input type="text" id="reddit-input" style="width: 100%;" value="">
+                                    <textarea id="text-input" style="width: 100%;height: 200px;" value=""></textarea>
+                                    <input type="text" id="reddit-input" style="width: 100%;display: none;" value="" placeholder="">
+                                    <div style="width: 100%;height: 5px;"></div>
+                                    <div id="depth-selection" style="display: none;">
+                                        <label>Search Depth*:   </label>
+                                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                            <label class="btn btn-primary btn-sm active">
+                                                <input type="radio" name="page-options" id="page1" autocomplete="off" value="1" checked>1
+                                            </label>
+                                            <label class="btn btn-primary btn-sm">
+                                                <input type="radio" name="page-options" id="page3" autocomplete="off" value="3">3
+                                            </label>
+                                            <label class="btn btn-primary btn-sm">
+                                                <input type="radio" name="page-options" id="page5" autocomplete="off" value="5">5
+                                            </label>
+                                            <label class="btn btn-primary btn-sm">
+                                                <input type="radio" name="page-options" id="page10" autocomplete="off" value="10">10
+                                            </label>
+                                            <label class="btn btn-primary btn-sm">
+                                                <input type="radio" name="page-options" id="page20" autocomplete="off" value="20">20
+                                            </label>
+                                            <label class="btn btn-primary btn-sm">
+                                                <input type="radio" name="page-options" id="page30" autocomplete="off" value="30">max
+                                            </label>
+                                        </div>
+                                        <p style="font-size: 12px;">*The search depth refers to the twitter user's status history by page;
+                                            selecting "1" will bring back the most recent tweets (1st page of tweets), selecting "max" will attempt to grab up to 30 pages of tweets
+                                            (experimental and may take some time to retrieve the data so please be patient).
+                                        </p>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button class="btn btn-primary" type="button" data-dismiss="modal">Save</button>
