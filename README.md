@@ -1,1 +1,1 @@
-http://www.redditwordclouds.com/
+http://www.socialwordcloud.com/
